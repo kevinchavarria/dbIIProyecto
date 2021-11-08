@@ -1,0 +1,15 @@
+create procedure spClientesPorServicio @Servicio int
+as
+	select * into #Servicios from Servicios where id = @Servicio
+
+	select s.id [ServicioID], s.nombre [Nombre del Servicio], cn.id [ContratoID],
+	c.id [ClienteID], c.nombre [Nombre del Cliente], c.direccion [Dirección]
+	from
+	Cliente as C
+	inner join Contratos as cn on c.id = cn.clienteID
+	inner join DETALLE_CONTRATO as dt on cn.id = dt.contratoID
+	inner join SERVICIOS as s on dt.servicioID = s.id
+	where s.id= @Servicio
+go
+
+execute spClientesPorServicio 6
